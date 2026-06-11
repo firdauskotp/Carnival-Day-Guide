@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qosmo Charity Carnival 2026 Guide</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/html5-qrcode" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <div class="avatar-wrap">
+        <img src="avatar.png" alt="FirAlter AI Companion avatar" class="avatar" />
+        <div class="status-pill">AI Guide Online</div>
+      </div>
+
+      <div class="intro-panel">
+        <p class="eyebrow">Qosmo Charity Carnival 2026</p>
+        <h1>Welcome, carnival explorer!</h1>
+        <div class="speech-box" id="speechBox">
+          Hi! I’m <strong>FIR-ALTER</strong>, your Qosmo Carnival companion. I can guide you to food, games, treasure hunt stations, badges, and prizes. Choose where you want to go!
+        </div>
+        <div class="quick-actions">
+          <button onclick="showSection('booths')">Find a Booth</button>
+          <button onclick="showSection('treasure')">Treasure Hunt</button>
+          <button onclick="showSection('badges')">Badge Quest</button>
+          <button onclick="showSection('scanner')">QR / Photo</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="tab-nav" aria-label="Main sections">
+      <button class="tab active" data-section="booths" onclick="showSection('booths')">Booths</button>
+      <button class="tab" data-section="treasure" onclick="showSection('treasure')">Treasure Hunt</button>
+      <button class="tab" data-section="badges" onclick="showSection('badges')">Badges</button>
+      <button class="tab" data-section="scanner" onclick="showSection('scanner')">QR / Photo</button>
+      <button class="tab" data-section="map" onclick="showSection('map')">Map Guide</button>
+    </nav>
+
+    <section id="booths" class="content-section active-section">
+      <div class="section-heading">
+        <h2>Where do you want to go?</h2>
+        <p>Tap a location to see what is available and how to get there.</p>
+      </div>
+      <div class="search-box">
+        <input id="boothSearch" type="search" placeholder="Search food, matcha, treasure hunt, basketball..." oninput="filterBooths()" />
+      </div>
+      <div class="card-grid" id="boothGrid"></div>
+    </section>
+
+    <section id="treasure" class="content-section">
+      <div class="section-heading">
+        <h2>Treasure Hunt</h2>
+        <p>Choose your challenge level and collect clues around the carnival.</p>
+      </div>
+      <div class="two-column">
+        <article class="info-card glow-card">
+          <h3>Beginner Level</h3>
+          <p>Perfect for younger players or first-time explorers. The clues are easier and the route is shorter.</p>
+          <button onclick="startQuest('Beginner')">Start Beginner Quest</button>
+        </article>
+        <article class="info-card glow-card">
+          <h3>Advance Level</h3>
+          <p>Harder clues, more challenging route, and a chance to win better prizes.</p>
+          <button onclick="startQuest('Advance')">Start Advance Quest</button>
+        </article>
+      </div>
+      <article class="info-card quest-progress">
+        <h3>Your Quest</h3>
+        <p id="questStatus">No quest selected yet.</p>
+        <p class="small-note">Privacy note: this saves only on this phone/browser using local storage. No login is needed.</p>
+      </article>
+    </section>
+
+    <section id="badges" class="content-section">
+      <div class="section-heading">
+        <h2>Badge Quest</h2>
+        <p>Collect badges from each game station. The fastest 3 participants who collect them all can win an even bigger prize!</p>
+      </div>
+      <div class="badge-panel" id="badgePanel"></div>
+      <button class="secondary-btn" onclick="resetBadges()">Reset badges on this phone</button>
+    </section>
+
+    <section id="scanner" class="content-section">
+      <div class="section-heading">
+        <h2>QR Scanner & Photo Challenge</h2>
+        <p>Use QR codes for clues, or take a photo for selected carnival games.</p>
+      </div>
+      <div class="two-column">
+        <article class="info-card">
+          <h3>Scan QR Code</h3>
+          <p>Press start, allow camera access, then scan a carnival clue QR.</p>
+          <div class="scanner-buttons">
+            <button onclick="startScanner()">Start Scanner</button>
+            <button class="secondary-btn" onclick="stopScanner()">Stop Scanner</button>
+          </div>
+          <div id="reader"></div>
+          <p id="qrResult" class="result-box">No QR scanned yet.</p>
+        </article>
+        <article class="info-card">
+          <h3>Photo Challenge</h3>
+          <p>Take or upload a photo. For better privacy, show it to the booth staff instead of uploading it online.</p>
+          <input id="photoInput" type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)" />
+          <img id="photoPreview" class="photo-preview" alt="Photo preview will appear here" />
+          <p class="small-note">This preview stays only on the participant’s device.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="map" class="content-section">
+      <div class="section-heading">
+        <h2>Simple Map Guide</h2>
+        <p>Select a destination and FIR-ALTER will give simple directions.</p>
+      </div>
+      <article class="info-card">
+        <label for="destination">Choose destination:</label>
+        <select id="destination" onchange="showDirections()">
+          <option value="">-- Select a location --</option>
+        </select>
+        <div id="directionResult" class="direction-box">Choose a booth to view directions.</div>
+      </article>
+      <div class="map-card">
+        <h3>Text Map</h3>
+        <pre>
+[Court 1] Basketball Hoops
+        |
+[Math Room] Talent Show / Game Show
+        |
+[Library] Treasure Hunt / Maze Game
+        |
+[Old Year 5 Room] 3D Station / Thrift Shop
+        |
+[Year 4B] Fashion Booth
+        |
+[Canteen] Food / Matcha / Japanese Station
+        </pre>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
