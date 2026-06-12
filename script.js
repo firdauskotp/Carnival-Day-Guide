@@ -2,14 +2,13 @@ const booths = [
   {
     id: 'canteen',
     title: 'Canteen',
-    subtitle: 'Food, drinks, matcha activity, Japanese station, and mini games',
+    subtitle: 'Food, drinks, matcha activity, Japanese station, and mini items',
     items: [
       'Matcha activity: make it yourself for RM2, or ask us to brew it for RM4',
       'Matcha latte',
       'Primary food stalls: waffles and ice cream, floats and sodas, oden, chocolate balls',
       'Japanese Food Station: sushi rolls, takoyaki, chocolate marshmallows, onigiri',
-      'Dolls, blind box, 3D clips, books, and other small items',
-      'Japanese rock paper scissors'
+      'Dolls, blind box, 3D clips, books, and other small items'
     ],
     direction: 'Head to the Canteen area. Look for the food stalls, matcha area, and Japanese Food Station.'
   },
@@ -37,9 +36,9 @@ const booths = [
   {
     id: 'mathroom',
     title: 'Math Room',
-    subtitle: 'Talent and game shows',
-    items: ['Talent show', 'Game show'],
-    direction: 'Go to the Math Room for performances and game show activities.'
+    subtitle: 'Talent show, game show, and Jankenpon',
+    items: ['Talent show', 'Game show', 'Japanese Rock Paper Scissors: Jankenpon'],
+    direction: 'Go to the Math Room for performances, game show activities, and the Jankenpon challenge.'
   },
   {
     id: 'court1',
@@ -55,7 +54,8 @@ const games = [
     id: 'basketball',
     title: 'Basketball Hoops',
     location: 'Court 1',
-    description: 'Score from before the white line 3 times in a row to get a food discount and a badge.'
+    description: 'Score from before the white line 3 times in a row to get a food discount and a badge.',
+    badgeImage: 'badges/badge-basketball.png'
   },
   {
     id: 'matcha',
@@ -67,25 +67,29 @@ const games = [
     id: 'treasurehunt',
     title: 'Treasure Hunt',
     location: 'Library',
-    description: 'Hunt for all the pictures. Choose Beginner for easier clues or Advance for better prize chances.'
+    description: 'Hunt for all the pictures. Choose Beginner for easier clues or Advance for better prize chances.',
+    badgeImage: 'badges/badge-treasure-hunt.png'
   },
   {
     id: 'maze',
     title: 'Maze Game',
     location: 'Library',
-    description: 'Try to escape the maze. Advance treasure hunt players should keep their eyes open for an extra photo clue.'
+    description: 'Try to escape the maze. Advance treasure hunt players should keep their eyes open for an extra photo clue.',
+    badgeImage: 'badges/badge-maze.png'
   },
   {
     id: 'gameshow',
     title: 'Game Show',
     location: 'Math Room',
-    description: 'Answer our trivia questions to win. Think fast and trust your knowledge!'
+    description: 'Answer our trivia questions to win. Think fast and trust your knowledge!',
+    badgeImage: 'badges/badge-game-show.png'
   },
   {
-    id: 'janken',
+    id: 'jankenpon',
     title: 'Japanese Rock Paper Scissors: Jankenpon',
-    location: 'Canteen',
-    description: 'Beat our captain to win! Say “Jan-ken-pon!” and show rock, paper, or scissors. Rock beats scissors, scissors beats paper, and paper beats rock.'
+    location: 'Math Room',
+    description: 'Beat our captain to win! Say “Jan-ken-pon!” and show rock, paper, or scissors. Rock beats scissors, scissors beats paper, and paper beats rock.',
+    badgeImage: 'badges/badge-jankenpon.png'
   }
 ];
 
@@ -122,14 +126,45 @@ const activities = [
   }
 ];
 
-const badgeStations = [
-  'Canteen',
-  'Year 4B Fashion Booth',
-  'Library',
-  'Old Year 5 Room',
-  'Math Room',
-  'Court 1'
+const crocodylusBadges = [
+  {
+    id: 'jankenpon',
+    title: 'Jankenpon Badge',
+    game: 'Japanese Rock Paper Scissors',
+    location: 'Math Room',
+    image: 'badges/badge-jankenpon.png'
+  },
+  {
+    id: 'gameshow',
+    title: 'Game Show Badge',
+    game: 'Game Show',
+    location: 'Math Room',
+    image: 'badges/badge-game-show.png'
+  },
+  {
+    id: 'basketball',
+    title: 'Basketball Badge',
+    game: 'Basketball Hoops',
+    location: 'Court 1',
+    image: 'badges/badge-basketball.png'
+  },
+  {
+    id: 'treasurehunt',
+    title: 'Treasure Hunt Badge',
+    game: 'Treasure Hunt',
+    location: 'Library',
+    image: 'badges/badge-treasure-hunt.png'
+  },
+  {
+    id: 'maze',
+    title: 'Maze Badge',
+    game: 'Maze Game',
+    location: 'Library',
+    image: 'badges/badge-maze.png'
+  }
 ];
+
+const badgeStations = crocodylusBadges.map(badge => badge.title);
 
 function showSection(sectionId) {
   document.querySelectorAll('.content-section').forEach(section => {
@@ -146,8 +181,8 @@ function showSection(sectionId) {
     games: 'Game list loaded. Win them to collect badges and complete quests.',
     activities: 'Activity list loaded. Try something creative or visit the shops.',
     treasure: 'Treasure hunt mode activated. Beginner or Advance?',
-    crocodylus: 'Crocodylus Quest activated. This is the ultimate challenge!',
-    badges: 'Collect badges from every game station. Fastest 3 complete collectors can win a bigger prize!',
+    crocodylus: 'Crocodylus Quest activated. Collect the 5 required badges as fast as you can!',
+    badges: 'Collect all 5 Crocodylus Quest badges. Fastest 3 complete collectors can win a bigger prize!',
     map: 'Select a destination and I will show directions.'
   };
 
@@ -181,9 +216,15 @@ function renderGames() {
   games.forEach(game => {
     const card = document.createElement('article');
     card.className = 'info-card game-card';
+    const badgeImage = game.badgeImage ? `<img class="mini-badge" src="${game.badgeImage}" alt="${game.title} badge">` : '';
     card.innerHTML = `
-      <span class="location-pill">${game.location}</span>
-      <h3>${game.title}</h3>
+      <div class="game-card-header">
+        ${badgeImage}
+        <div>
+          <span class="location-pill">${game.location}</span>
+          <h3>${game.title}</h3>
+        </div>
+      </div>
       <p>${game.description}</p>
       <button onclick="guideToLocation('${game.location}')">Guide me here</button>
     `;
@@ -208,6 +249,20 @@ function renderActivities() {
   });
 }
 
+function renderCrocodylusBadges() {
+  const grid = document.getElementById('crocodylusBadgeGrid');
+  if (!grid) return;
+
+  grid.innerHTML = crocodylusBadges.map(badge => `
+    <article class="required-badge-card">
+      <img src="${badge.image}" alt="${badge.title}">
+      <h4>${badge.title}</h4>
+      <p>${badge.game}</p>
+      <span>${badge.location}</span>
+    </article>
+  `).join('');
+}
+
 function filterBooths() {
   const keyword = document.getElementById('boothSearch').value.toLowerCase().trim();
   const filtered = booths.filter(booth => {
@@ -228,12 +283,6 @@ function guideTo(id) {
 }
 
 function guideToLocation(locationName) {
-  const booth = booths.find(item => locationName.toLowerCase().includes(item.title.toLowerCase()) || item.title.toLowerCase().includes(locationName.toLowerCase()));
-  if (booth) {
-    guideTo(booth.id);
-    return;
-  }
-
   const fallbackMap = {
     'Year 4B': 'year4b',
     'Old Year 5 Room': 'oldyear5',
@@ -243,8 +292,13 @@ function guideToLocation(locationName) {
     'Canteen': 'canteen'
   };
 
-  const id = fallbackMap[locationName];
-  if (id) guideTo(id);
+  if (fallbackMap[locationName]) {
+    guideTo(fallbackMap[locationName]);
+    return;
+  }
+
+  const booth = booths.find(item => locationName.toLowerCase().includes(item.title.toLowerCase()) || item.title.toLowerCase().includes(locationName.toLowerCase()));
+  if (booth) guideTo(booth.id);
 }
 
 function populateDestinations() {
@@ -285,14 +339,14 @@ function loadQuest() {
 
   const crocodylusStarted = localStorage.getItem('crocodylusQuestStarted');
   if (crocodylusStarted === 'yes') {
-    document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Win all required games, then show your proof to the carnival crew.';
+    document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Collect all 5 badges: Jankenpon, Game Show, Basketball, Treasure Hunt, and Maze.';
   }
 }
 
 function startCrocodylusQuest() {
   localStorage.setItem('crocodylusQuestStarted', 'yes');
-  document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Win Basketball Hoops, Maze Game, Treasure Hunt, Japanese Rock Paper Scissors, and Game Show as fast as you can!';
-  document.getElementById('speechBox').innerHTML = '<strong>Crocodylus Quest started!</strong> Complete all required games quickly. 3 winners will be chosen based on speed and completion.';
+  document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Collect all 5 badges: Jankenpon, Game Show, Basketball, Treasure Hunt, and Maze!';
+  document.getElementById('speechBox').innerHTML = '<strong>Crocodylus Quest started!</strong> Collect all 5 badges quickly. 3 winners will be chosen based on speed and completion.';
 }
 
 function renderBadges() {
@@ -300,18 +354,19 @@ function renderBadges() {
   panel.innerHTML = '';
   const collected = JSON.parse(localStorage.getItem('qosmoBadges') || '[]');
 
-  badgeStations.forEach(station => {
-    const isCollected = collected.includes(station);
+  crocodylusBadges.forEach(badge => {
+    const isCollected = collected.includes(badge.title);
     const card = document.createElement('article');
-    card.className = `badge-card ${isCollected ? 'collected' : ''}`;
+    card.className = `badge-card visual-badge-card ${isCollected ? 'collected' : ''}`;
     card.innerHTML = `
-      <div class="badge-icon">${isCollected ? '✓' : '☆'}</div>
-      <div>
-        <strong>${station}</strong><br>
-        <small>${isCollected ? 'Collected' : 'Tap when collected'}</small>
+      <img src="${badge.image}" alt="${badge.title}" class="badge-card-image">
+      <div class="badge-copy">
+        <strong>${badge.title}</strong><br>
+        <small>${badge.game} - ${badge.location}</small><br>
+        <span class="badge-status">${isCollected ? 'Collected' : 'Tap when collected'}</span>
       </div>
     `;
-    card.onclick = () => toggleBadge(station);
+    card.onclick = () => toggleBadge(badge.title);
     panel.appendChild(card);
   });
 }
@@ -341,6 +396,7 @@ function resetBadges() {
 renderBooths();
 renderGames();
 renderActivities();
+renderCrocodylusBadges();
 populateDestinations();
 renderBadges();
 loadQuest();

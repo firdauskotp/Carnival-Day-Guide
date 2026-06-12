@@ -425,3 +425,131 @@ select option {
     min-height: auto;
   }
 }
+
+.required-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.required-badge-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  padding: 10px;
+  text-align: center;
+}
+
+.required-badge-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #fff;
+  margin-bottom: 8px;
+}
+
+.required-badge-card h4 {
+  margin: 0 0 4px;
+  font-size: 0.92rem;
+}
+
+.required-badge-card p {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+}
+
+.required-badge-card span {
+  display: inline-block;
+  font-size: 0.74rem;
+  color: #080816;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+  font-weight: 800;
+}
+
+.game-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.mini-badge {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+}
+
+.visual-badge-card {
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.badge-card-image {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.badge-copy {
+  min-width: 0;
+}
+
+.badge-status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.badge-card.collected .badge-status {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #080816;
+}
+
+.badge-card.collected .badge-card-image,
+.required-badge-card:hover img,
+.mini-badge:hover {
+  box-shadow: 0 0 0 3px rgba(73, 230, 200, 0.35), 0 12px 30px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 900px) {
+  .required-badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .required-badge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-card-header {
+    align-items: flex-start;
+  }
+
+  .mini-badge {
+    width: 62px;
+    height: 62px;
+    flex-basis: 62px;
+  }
+
+  .badge-card-image {
+    width: 74px;
+    height: 74px;
+  }
+}

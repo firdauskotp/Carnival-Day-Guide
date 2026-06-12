@@ -36,7 +36,7 @@
       <button class="tab" data-section="activities" onclick="showSection('activities')">Activities</button>
       <button class="tab" data-section="treasure" onclick="showSection('treasure')">Treasure Hunt</button>
       <button class="tab" data-section="crocodylus" onclick="showSection('crocodylus')">Crocodylus Quest</button>
-      <!-- <button class="tab" data-section="badges" onclick="showSection('badges')">Badges</button> -->
+      <button class="tab" data-section="badges" onclick="showSection('badges')">Badges</button>
       <button class="tab" data-section="map" onclick="showSection('map')">Map Guide</button>
     </nav>
 
@@ -71,8 +71,6 @@
       <div class="section-heading">
         <h2>Treasure Hunt</h2>
         <p>Choose your challenge level and collect clues around the carnival.</p>
-        <p>To start, go to the library and locate the teacher there</p>
-        <p>Once done, return back to the teacher with all your badges</p>
       </div>
       <div class="two-column">
         <article class="info-card glow-card">
@@ -111,14 +109,9 @@
         <h3>Ultimate Quest Rules</h3>
         <p>Prepare to win prizes if you complete this quest the quickest. There will be <strong>3 winners</strong> based on speed and completion.</p>
         <p>Prizes include a <strong>headset</strong> and some extra food.</p>
-        <p>To win Crocodylus Quest, you need to win all of these games:</p>
-        <ul class="item-list quest-list">
-          <li>Basketball Hoops</li>
-          <li>Maze Game</li>
-          <li>Treasure Hunt</li>
-          <li>Japanese Rock Paper Scissors</li>
-          <li>Game Show</li>
-        </ul>
+        <p>To win Crocodylus Quest, you need to win all of these games and collect the matching badges:</p>
+        <div class="required-badge-grid" id="crocodylusBadgeGrid"></div>
+        <p class="small-note">Tip: keep your badges/card safe. Show your completed proof to the carnival crew as soon as you finish.</p>
         <button onclick="startCrocodylusQuest()">Start Crocodylus Quest</button>
       </article>
       <article class="info-card quest-progress">
@@ -127,14 +120,14 @@
       </article>
     </section>
 
-    <!-- <section id="badges" class="content-section">
+    <section id="badges" class="content-section">
       <div class="section-heading">
         <h2>Badge Quest</h2>
-        <p>Collect badges from each game station. The fastest 3 participants who collect them all can win an even bigger prize!</p>
+        <p>Collect the 5 Crocodylus Quest badges. The fastest 3 participants who collect them all can win an even bigger prize!</p>
       </div>
       <div class="badge-panel" id="badgePanel"></div>
       <button class="secondary-btn" onclick="resetBadges()">Reset badges on this phone</button>
-    </section> -->
+    </section>
 
     <section id="map" class="content-section">
       <div class="section-heading">
@@ -153,7 +146,7 @@
         <pre>
 [Court 1] Basketball Hoops
         |
-[Math Room] Talent Show / Game Show
+[Math Room] Talent Show / Game Show / Jankenpon
         |
 [Library] Treasure Hunt / Maze Game
         |
