@@ -8,7 +8,7 @@ const booths = [
       'Matcha latte',
       'Primary food stalls: waffles and ice cream, floats and sodas, oden, chocolate balls',
       'Japanese Food Station: sushi rolls, takoyaki, chocolate marshmallows, onigiri',
-      'Dolls, blind box, 3D clips, books, and other items',
+      'Dolls, blind box, 3D clips, books, and other small items',
       'Japanese rock paper scissors'
     ],
     direction: 'Head to the Canteen area. Look for the food stalls, matcha area, and Japanese Food Station.'
@@ -50,6 +50,78 @@ const booths = [
   }
 ];
 
+const games = [
+  {
+    id: 'basketball',
+    title: 'Basketball Hoops',
+    location: 'Court 1',
+    description: 'Score from before the white line 3 times in a row to get a food discount and a badge.'
+  },
+  {
+    id: 'matcha',
+    title: 'Matcha Activity',
+    location: 'Canteen',
+    description: 'Make your own matcha for RM2, or ask us to brew it for RM4. Matcha latte is also available.'
+  },
+  {
+    id: 'treasurehunt',
+    title: 'Treasure Hunt',
+    location: 'Library',
+    description: 'Hunt for all the pictures. Choose Beginner for easier clues or Advance for better prize chances.'
+  },
+  {
+    id: 'maze',
+    title: 'Maze Game',
+    location: 'Library',
+    description: 'Try to escape the maze. Advance treasure hunt players should keep their eyes open for an extra photo clue.'
+  },
+  {
+    id: 'gameshow',
+    title: 'Game Show',
+    location: 'Math Room',
+    description: 'Answer our trivia questions to win. Think fast and trust your knowledge!'
+  },
+  {
+    id: 'janken',
+    title: 'Japanese Rock Paper Scissors: Jankenpon',
+    location: 'Canteen',
+    description: 'Beat our captain to win! Say “Jan-ken-pon!” and show rock, paper, or scissors. Rock beats scissors, scissors beats paper, and paper beats rock.'
+  }
+];
+
+const activities = [
+  {
+    id: 'thriftshop',
+    title: 'Thrift Shop',
+    location: 'Old Year 5 Room',
+    description: 'Get unique items for a fair price, including dolls, blind boxes, books, 3D clips, and more.'
+  },
+  {
+    id: '3dprinting',
+    title: '3D Printing Station',
+    location: 'Old Year 5 Room',
+    description: 'Learn about 3D printing and print a keychain with your own name on it.'
+  },
+  {
+    id: 'drawing',
+    title: 'Drawing Booth',
+    location: 'Year 4B',
+    description: 'Let our artists draw you in an anime style and make bookmarks for a fair price.'
+  },
+  {
+    id: 'bracelet',
+    title: 'Bracelet Making',
+    location: 'Year 4B',
+    description: 'Use beads to make friendship bracelets for yourself or your friends.'
+  },
+  {
+    id: 'henna',
+    title: 'Henna Art',
+    location: 'Year 4B',
+    description: 'Decorate your hands with beautiful henna designs at the Fashion Booth.'
+  }
+];
+
 const badgeStations = [
   'Canteen',
   'Year 4B Fashion Booth',
@@ -58,8 +130,6 @@ const badgeStations = [
   'Math Room',
   'Court 1'
 ];
-
-let html5QrCode;
 
 function showSection(sectionId) {
   document.querySelectorAll('.content-section').forEach(section => {
@@ -73,9 +143,11 @@ function showSection(sectionId) {
 
   const sectionNames = {
     booths: 'Choose a booth and I will guide you there.',
+    games: 'Game list loaded. Win them to collect badges and complete quests.',
+    activities: 'Activity list loaded. Try something creative or visit the shops.',
     treasure: 'Treasure hunt mode activated. Beginner or Advance?',
+    crocodylus: 'Crocodylus Quest activated. This is the ultimate challenge!',
     badges: 'Collect badges from every game station. Fastest 3 complete collectors can win a bigger prize!',
-    scanner: 'QR and photo tools are ready. Please allow camera access only when needed.',
     map: 'Select a destination and I will show directions.'
   };
 
@@ -102,6 +174,40 @@ function renderBooths(list = booths) {
   });
 }
 
+function renderGames() {
+  const grid = document.getElementById('gameGrid');
+  grid.innerHTML = '';
+
+  games.forEach(game => {
+    const card = document.createElement('article');
+    card.className = 'info-card game-card';
+    card.innerHTML = `
+      <span class="location-pill">${game.location}</span>
+      <h3>${game.title}</h3>
+      <p>${game.description}</p>
+      <button onclick="guideToLocation('${game.location}')">Guide me here</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderActivities() {
+  const grid = document.getElementById('activityGrid');
+  grid.innerHTML = '';
+
+  activities.forEach(activity => {
+    const card = document.createElement('article');
+    card.className = 'info-card activity-card';
+    card.innerHTML = `
+      <span class="location-pill">${activity.location}</span>
+      <h3>${activity.title}</h3>
+      <p>${activity.description}</p>
+      <button onclick="guideToLocation('${activity.location}')">Guide me here</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
 function filterBooths() {
   const keyword = document.getElementById('boothSearch').value.toLowerCase().trim();
   const filtered = booths.filter(booth => {
@@ -119,6 +225,26 @@ function guideTo(id) {
   showSection('map');
   document.getElementById('destination').value = id;
   showDirections();
+}
+
+function guideToLocation(locationName) {
+  const booth = booths.find(item => locationName.toLowerCase().includes(item.title.toLowerCase()) || item.title.toLowerCase().includes(locationName.toLowerCase()));
+  if (booth) {
+    guideTo(booth.id);
+    return;
+  }
+
+  const fallbackMap = {
+    'Year 4B': 'year4b',
+    'Old Year 5 Room': 'oldyear5',
+    'Math Room': 'mathroom',
+    'Court 1': 'court1',
+    'Library': 'library',
+    'Canteen': 'canteen'
+  };
+
+  const id = fallbackMap[locationName];
+  if (id) guideTo(id);
 }
 
 function populateDestinations() {
@@ -156,6 +282,17 @@ function loadQuest() {
   if (level) {
     document.getElementById('questStatus').textContent = `${level} Treasure Hunt selected. Go to the Library to continue.`;
   }
+
+  const crocodylusStarted = localStorage.getItem('crocodylusQuestStarted');
+  if (crocodylusStarted === 'yes') {
+    document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Win all required games, then show your proof to the carnival crew.';
+  }
+}
+
+function startCrocodylusQuest() {
+  localStorage.setItem('crocodylusQuestStarted', 'yes');
+  document.getElementById('crocodylusStatus').textContent = 'Crocodylus Quest started. Win Basketball Hoops, Maze Game, Treasure Hunt, Japanese Rock Paper Scissors, and Game Show as fast as you can!';
+  document.getElementById('speechBox').innerHTML = '<strong>Crocodylus Quest started!</strong> Complete all required games quickly. 3 winners will be chosen based on speed and completion.';
 }
 
 function renderBadges() {
@@ -201,50 +338,9 @@ function resetBadges() {
   renderBadges();
 }
 
-function startScanner() {
-  const qrResult = document.getElementById('qrResult');
-
-  if (!window.Html5Qrcode) {
-    qrResult.textContent = 'QR scanner library is not loaded. Please connect to the internet or use the non-scanner version.';
-    return;
-  }
-
-  if (!html5QrCode) {
-    html5QrCode = new Html5Qrcode('reader');
-  }
-
-  html5QrCode.start(
-    { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 220, height: 220 } },
-    decodedText => {
-      qrResult.textContent = `QR scanned: ${decodedText}`;
-      document.getElementById('speechBox').innerHTML = `<strong>QR scanned!</strong> ${decodedText}`;
-    },
-    () => {}
-  ).catch(error => {
-    qrResult.textContent = `Unable to start camera: ${error}`;
-  });
-}
-
-function stopScanner() {
-  if (html5QrCode) {
-    html5QrCode.stop().catch(() => {});
-  }
-}
-
-function previewPhoto(event) {
-  const file = event.target.files[0];
-  const preview = document.getElementById('photoPreview');
-
-  if (!file) return;
-
-  const url = URL.createObjectURL(file);
-  preview.src = url;
-  preview.style.display = 'block';
-  document.getElementById('speechBox').innerHTML = '<strong>Photo ready!</strong> Show your photo to the booth staff to complete the challenge.';
-}
-
 renderBooths();
+renderGames();
+renderActivities();
 populateDestinations();
 renderBadges();
 loadQuest();

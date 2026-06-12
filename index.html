@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qosmo Charity Carnival 2026 Guide</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/html5-qrcode" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -20,22 +19,24 @@
         <p class="eyebrow">Qosmo Charity Carnival 2026</p>
         <h1>Welcome, carnival explorer!</h1>
         <div class="speech-box" id="speechBox">
-          Hi! I’m <strong>FIR-ALTER</strong>, your Qosmo Carnival companion. I can guide you to food, games, treasure hunt stations, badges, and prizes. Choose where you want to go!
+          Hi! I’m <strong>FIR-ALTER</strong>, your Qosmo Carnival companion. I can guide you to food, games, activities, treasure hunt clues, badges, and the ultimate Crocodylus Quest.
         </div>
         <div class="quick-actions">
           <button onclick="showSection('booths')">Find a Booth</button>
-          <button onclick="showSection('treasure')">Treasure Hunt</button>
-          <button onclick="showSection('badges')">Badge Quest</button>
-          <button onclick="showSection('scanner')">QR / Photo</button>
+          <button onclick="showSection('games')">Games</button>
+          <button onclick="showSection('activities')">Activities</button>
+          <button onclick="showSection('crocodylus')">Crocodylus Quest</button>
         </div>
       </div>
     </section>
 
     <nav class="tab-nav" aria-label="Main sections">
       <button class="tab active" data-section="booths" onclick="showSection('booths')">Booths</button>
+      <button class="tab" data-section="games" onclick="showSection('games')">Games</button>
+      <button class="tab" data-section="activities" onclick="showSection('activities')">Activities</button>
       <button class="tab" data-section="treasure" onclick="showSection('treasure')">Treasure Hunt</button>
-      <button class="tab" data-section="badges" onclick="showSection('badges')">Badges</button>
-      <button class="tab" data-section="scanner" onclick="showSection('scanner')">QR / Photo</button>
+      <button class="tab" data-section="crocodylus" onclick="showSection('crocodylus')">Crocodylus Quest</button>
+      <!-- <button class="tab" data-section="badges" onclick="showSection('badges')">Badges</button> -->
       <button class="tab" data-section="map" onclick="showSection('map')">Map Guide</button>
     </nav>
 
@@ -50,20 +51,47 @@
       <div class="card-grid" id="boothGrid"></div>
     </section>
 
+    <section id="games" class="content-section">
+      <div class="section-heading">
+        <h2>Games</h2>
+        <p>Win games, collect badges, and complete the ultimate quest.</p>
+      </div>
+      <div class="card-grid" id="gameGrid"></div>
+    </section>
+
+    <section id="activities" class="content-section">
+      <div class="section-heading">
+        <h2>Activities</h2>
+        <p>Creative, food, and shopping activities around the carnival.</p>
+      </div>
+      <div class="card-grid" id="activityGrid"></div>
+    </section>
+
     <section id="treasure" class="content-section">
       <div class="section-heading">
         <h2>Treasure Hunt</h2>
         <p>Choose your challenge level and collect clues around the carnival.</p>
+        <p>To start, go to the library and locate the teacher there</p>
+        <p>Once done, return back to the teacher with all your badges</p>
       </div>
       <div class="two-column">
         <article class="info-card glow-card">
           <h3>Beginner Level</h3>
-          <p>Perfect for younger players or first-time explorers. The clues are easier and the route is shorter.</p>
+          <p>Find the badge stations using these hints:</p>
+          <ol class="number-list">
+            <li>A place where you feel refreshed again.</li>
+            <li>Somewhere to beautify yourself.</li>
+            <li>Where tiny treasures are printed layer by layer, and hidden bargains wait nearby.</li>
+            <li>Where the ball flies high and the hoop decides your score.</li>
+            <li>Where brains battle in a room of numbers, questions, and quick answers.</li>
+          </ol>
           <button onclick="startQuest('Beginner')">Start Beginner Quest</button>
         </article>
         <article class="info-card glow-card">
           <h3>Advance Level</h3>
           <p>Harder clues, more challenging route, and a chance to win better prizes.</p>
+          <p>Advance players have one extra thing to snap a photo of. It might be hidden somewhere inside the Maze Game.</p>
+          <p><strong>Tip:</strong> Show your treasure hunt card to the teacher at the Maze Game to get a discount.</p>
           <button onclick="startQuest('Advance')">Start Advance Quest</button>
         </article>
       </div>
@@ -74,40 +102,39 @@
       </article>
     </section>
 
-    <section id="badges" class="content-section">
+    <section id="crocodylus" class="content-section">
+      <div class="section-heading">
+        <h2>Crocodylus Quest</h2>
+        <p>The ultimate carnival challenge for the fastest and bravest explorers.</p>
+      </div>
+      <article class="info-card ultimate-card">
+        <h3>Ultimate Quest Rules</h3>
+        <p>Prepare to win prizes if you complete this quest the quickest. There will be <strong>3 winners</strong> based on speed and completion.</p>
+        <p>Prizes include a <strong>headset</strong> and some extra food.</p>
+        <p>To win Crocodylus Quest, you need to win all of these games:</p>
+        <ul class="item-list quest-list">
+          <li>Basketball Hoops</li>
+          <li>Maze Game</li>
+          <li>Treasure Hunt</li>
+          <li>Japanese Rock Paper Scissors</li>
+          <li>Game Show</li>
+        </ul>
+        <button onclick="startCrocodylusQuest()">Start Crocodylus Quest</button>
+      </article>
+      <article class="info-card quest-progress">
+        <h3>Your Crocodylus Status</h3>
+        <p id="crocodylusStatus">Quest not started yet.</p>
+      </article>
+    </section>
+
+    <!-- <section id="badges" class="content-section">
       <div class="section-heading">
         <h2>Badge Quest</h2>
         <p>Collect badges from each game station. The fastest 3 participants who collect them all can win an even bigger prize!</p>
       </div>
       <div class="badge-panel" id="badgePanel"></div>
       <button class="secondary-btn" onclick="resetBadges()">Reset badges on this phone</button>
-    </section>
-
-    <section id="scanner" class="content-section">
-      <div class="section-heading">
-        <h2>QR Scanner & Photo Challenge</h2>
-        <p>Use QR codes for clues, or take a photo for selected carnival games.</p>
-      </div>
-      <div class="two-column">
-        <article class="info-card">
-          <h3>Scan QR Code</h3>
-          <p>Press start, allow camera access, then scan a carnival clue QR.</p>
-          <div class="scanner-buttons">
-            <button onclick="startScanner()">Start Scanner</button>
-            <button class="secondary-btn" onclick="stopScanner()">Stop Scanner</button>
-          </div>
-          <div id="reader"></div>
-          <p id="qrResult" class="result-box">No QR scanned yet.</p>
-        </article>
-        <article class="info-card">
-          <h3>Photo Challenge</h3>
-          <p>Take or upload a photo. For better privacy, show it to the booth staff instead of uploading it online.</p>
-          <input id="photoInput" type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)" />
-          <img id="photoPreview" class="photo-preview" alt="Photo preview will appear here" />
-          <p class="small-note">This preview stays only on the participant’s device.</p>
-        </article>
-      </div>
-    </section>
+    </section> -->
 
     <section id="map" class="content-section">
       <div class="section-heading">
